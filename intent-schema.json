@@ -1,0 +1,28 @@
+{
+  "intents": [
+    {
+      "slots": [
+        {
+          "name": "HostName",
+          "type": "LIST_OF_HOSTS"
+        }
+      ],
+      "intent": "WelcomeHostNameIntent"
+    },
+    {
+      "slots": [
+        {
+          "name": "VisitorName",
+          "type": "LIST_OF_VISITORS"
+        }
+      ],
+      "intent": "MyNameIntent"
+    },
+    {
+      "intent": "WelcomeIntent"
+    },
+    {
+      "intent": "AboutIntent"
+    }
+  ]
+}

@@ -1,52 +1,83 @@
 var Alexa = require('alexa-sdk');
- 
 const skillName = "Dre";
- 
-var handlers = {
- 
-    "WelcomeIntent": function () {
-        speechOutput = "I don't have anything interesting to share regarding what you've asked."
-        this.emit(':tellWithCard', speechOutput, skillName, speechOutput);
-    },
- 
-    "AboutIntent": function () {
-        var speechOutput = "The " + skillName + " Developer, Lilupa, is from Wellington, New Zealand";
-        this.emit(':tellWithCard', speechOutput, skillName, speechOutput);
-    },
- 
-    "AMAZON.HelpIntent": function () {
-        var speechOutput = "";
-        speechOutput += "Here are some things you can say: ";
-        speechOutput += "Tell me something interesting about Java. ";
-        speechOutput += "Tell me about the skill developer. ";
-        speechOutput += "You can also say stop if you're done. ";
-        speechOutput += "So how can I help?";
-        this.emit(':ask', speechOutput, speechOutput);
-    },
- 
-    "AMAZON.StopIntent": function () {
-        var speechOutput = "Goodbye and best wishes from " + skillName;
-        this.emit(':tell', speechOutput);
-    },
- 
-    "AMAZON.CancelIntent": function () {
-        var speechOutput = "Goodbye and best wishes from " + skillName;
-        this.emit(':tell', speechOutput);
-    },
- 
-    "LaunchRequest": function () {
-        var speechText = "";
-        speechText += "Welcome to " + skillName + ".  ";
-        speechText += "You can ask " + skillName + " to welcome your friends such as welcome John.";
-        var repromptText = "For instructions on what you can say, please say help me.";
-        this.emit(':ask', speechText, repromptText);
-    }
- 
-};
- 
+
 exports.handler = function (event, context) {
     var alexa = Alexa.handler(event, context);
     alexa.appId = "amzn1.ask.skill.36549ff4-b592-4c2e-af72-4301fbf72b7b";
-    alexa.registerHandlers(handlers);
+    alexa.registerHandlers(newSessionHandlers, startDreHandlers);
     alexa.execute();
 };
+
+var states = {
+    ENDMODE: '_ENDMODE',
+    STARTMODE: '_STARTMODE'
+};
+
+var newSessionHandlers = {
+    'NewSession': function() {
+        // if(Object.keys(this.attributes).length === 0) {
+        //     this.attributes['endedSessionCount'] = 0;
+        //     this.attributes['gamesPlayed'] = 0;
+        // }
+        this.handler.state = states.STARTMODE;
+        this.emit(':ask', 'Hi there, welcome to Fronde. How can I help you?',
+            'Say yes to start the app or no to quit.');
+    },
+    "AMAZON.StopIntent": function() {
+      this.emit(':tell', "Goodbye!");  
+    },
+    "AMAZON.CancelIntent": function() {
+      this.emit(':tell', "Goodbye!");  
+    },
+    'SessionEndedRequest': function () {
+        console.log('session ended!');
+        this.emit(":tell", "Goodbye!");
+    }
+};
+
+var startDreHandlers = Alexa.CreateStateHandler(states.STARTMODE, {
+    'NewSession': function () {
+        this.emit('NewSession'); // Uses the handler in newSessionHandlers
+    },
+    'WelcomeHostNameIntent': function () {
+        if (this.event.request.intent.slots.HostName.value.toLowerCase() == "paul") {
+            var message = "Hi there. Yes I will contact paul forgan and let him know that you are here. Could I get your name, please?";
+            this.emit(':ask', message, message);
+        }
+    },
+    'MyNameIntent': function(){
+        this.emit(':tell', 'Thanks. I am working on it. Please have a seat.');
+    },
+    'AMAZON.YesIntent': function () {
+        console.log("YESINTENT");
+        this.emit(':tell', 'Yes intent');
+    },
+    'AMAZON.NoIntent': function () {
+        console.log("NOINTENT");
+        this.emit(':tell', 'Ok, see you next time!');
+    },
+    "AMAZON.StopIntent": function () {
+        console.log("STOPINTENT");
+        this.emit(':tell', "Goodbye!");
+    },
+    "AMAZON.CancelIntent": function () {
+        console.log("CANCELINTENT");
+        this.emit(':tell', "Goodbye!");
+    },
+    'SessionEndedRequest': function () {
+        console.log("SESSIONENDEDREQUEST");
+        this.emit(':tell', "Goodbye!");
+    },
+    "LaunchRequest": function () {
+        var speechText = "";
+        speechText += "Welcome to " + skillName + ".  ";
+        speechText += "You can ask " + skillName + " to find out your meeting with Fronde host";
+        var repromptText = "For instructions on what you can say, please say help me.";
+        this.emit(':ask', speechText, repromptText);
+    },
+    'Unhandled': function () {
+        console.log("UNHANDLED");
+        var message = 'Say yes to continue, or no to end the application.';
+        this.emit(':ask', message, message);
+    }
+});

@@ -1,0 +1,22 @@
+WelcomeHostNameIntent that I am here to meet {HostName}
+WelcomeHostNameIntent i want to meet {HostName}
+WelcomeHostNameIntent that can i meet {HostName}
+WelcomeHostNameIntent that i have meeting setup with {HostName}
+
+MyNameIntent my name is {VisitorName}
+MyNameIntent I am {VisitorName}
+
+WelcomeIntent to find my meeting
+
+AboutIntent who developed this skill
+AboutIntent tell me about the developer
+AboutIntent give me information about the developer
+AboutIntent who is the author
+
+
+
+
+Open FG - Hi there, Welcome to Fronde. Are you here to meet someone?
+Yes - Please provide your name?
+my name - Thanks. Please provide host first and last name
+first name + last name - Thanks. I will inform paul. Please have a seat.
