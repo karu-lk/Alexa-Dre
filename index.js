@@ -14,7 +14,7 @@ var states = {
 };
 
 var newSessionHandlers = {
-    'NewSession': function() {
+    'NewSession': function () {
         // if(Object.keys(this.attributes).length === 0) {
         //     this.attributes['endedSessionCount'] = 0;
         //     this.attributes['gamesPlayed'] = 0;
@@ -23,11 +23,11 @@ var newSessionHandlers = {
         this.emit(':ask', 'Hi there, welcome to Fronde. How can I help you?',
             'Say yes to start the app or no to quit.');
     },
-    "AMAZON.StopIntent": function() {
-      this.emit(':tell', "Goodbye!");  
+    "AMAZON.StopIntent": function () {
+        this.emit(':tell', "Goodbye!");
     },
-    "AMAZON.CancelIntent": function() {
-      this.emit(':tell', "Goodbye!");  
+    "AMAZON.CancelIntent": function () {
+        this.emit(':tell', "Goodbye!");
     },
     'SessionEndedRequest': function () {
         console.log('session ended!');
@@ -41,12 +41,17 @@ var startDreHandlers = Alexa.CreateStateHandler(states.STARTMODE, {
     },
     'WelcomeHostNameIntent': function () {
         if (this.event.request.intent.slots.HostName.value.toLowerCase() == "paul") {
-            var message = "Hi there. Yes I will contact paul forgan and let him know that you are here. Could I get your name, please?";
+            var message = "Sure. I will contact paul forgan and let him know that you are here. Could I please get your name?";
             this.emit(':ask', message, message);
         }
     },
-    'MyNameIntent': function(){
-        this.emit(':tell', 'Thanks. I am working on it. Please have a seat.');
+    'MyNameIntent': function () {
+        if (this.event.request.intent.slots.VisitorName.value.toLowerCase() == "lilupa")
+            this.emit(':tell', 'Thanks Lilupa. I am working on it. Please have a seat.');
+        else if (this.event.request.intent.slots.VisitorName.value.toLowerCase() == "tom")
+            this.emit(':tell', 'Thanks Tom. I am working on it. Please have a seat.');
+        else
+            this.emit(':tell', 'Thanks. I am working on it. Please have a seat.');
     },
     'AMAZON.YesIntent': function () {
         console.log("YESINTENT");
