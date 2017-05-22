@@ -15,7 +15,6 @@ AboutIntent who is the author
 
 
 
-
 Open FG - Hi there, Welcome to Fronde. Are you here to meet someone?
 Yes - Please provide your name?
 my name - Thanks. Please provide host first and last name
