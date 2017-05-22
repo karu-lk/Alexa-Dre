@@ -15,10 +15,6 @@ var states = {
 
 var newSessionHandlers = {
     'NewSession': function () {
-        // if(Object.keys(this.attributes).length === 0) {
-        //     this.attributes['endedSessionCount'] = 0;
-        //     this.attributes['gamesPlayed'] = 0;
-        // }
         this.handler.state = states.STARTMODE;
         this.emit(':ask', 'Hi there, welcome to Fronde. How can I help you?',
             'Say yes to start the app or no to quit.');
@@ -46,12 +42,9 @@ var startDreHandlers = Alexa.CreateStateHandler(states.STARTMODE, {
         }
     },
     'MyNameIntent': function () {
-        if (this.event.request.intent.slots.VisitorName.value.toLowerCase() == "lilupa")
-            this.emit(':tell', 'Thanks Lilupa. I am working on it. Please have a seat.');
-        else if (this.event.request.intent.slots.VisitorName.value.toLowerCase() == "tom")
-            this.emit(':tell', 'Thanks Tom. I am working on it. Please have a seat.');
-        else
-            this.emit(':tell', 'Thanks. I am working on it. Please have a seat.');
+        //this works with any name even though you haven't defined in the slot
+        var visitorName = this.event.request.intent.slots.VisitorName.value;
+        this.emit(':tell', 'Thanks ' + visitorName + '. I am working on it. Please have a seat.');
     },
     'AMAZON.YesIntent': function () {
         console.log("YESINTENT");
